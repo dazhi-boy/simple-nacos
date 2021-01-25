@@ -3,8 +3,7 @@ package com.dazhi.nacosclient.naming.core;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -43,16 +42,49 @@ public class ServiceManager {
 
         synchronized (service) {
             //同一个servicename可能有多个服务，给他放到一个list中
-            List<Instance> instanceList = addIpAddresses(service, ips);
+            List<Instance> instanceList = updateIpAddresses(service, "add", ips);
 
             Instances instances = new Instances();
             instances.setInstanceList(instanceList);
             //将instancesput进去
-            consistencyService.put(key, instances);
+//            onPut(key, instances);
+            service.onChange(key,instances);
         }
     }
 
-    private void addInstance(String namespaceId, String serviceName, Instance instance) {
+    private List<Instance> updateIpAddresses(Service service, String action, Instance[] ips) {
+        List<Instance> currentIPs = service.allIPs();
+        Map<String, Instance> currentInstances = new HashMap<>(currentIPs.size());
+        Set<String> currentInstanceIds = new HashSet();
+        for (Instance instance : currentIPs) {
+            currentInstances.put(instance.toIpAddr(), instance);
+            currentInstanceIds.add(instance.getInstanceId());
+        }
+
+        Map<String, Instance> instanceMap;
+        instanceMap = new HashMap<>(ips.length);
+
+        for (Instance instance : ips) {
+            if (!service.getClusterMap().containsKey(instance.getClusterName())) {
+                Cluster cluster = new Cluster(instance.getClusterName(), service);
+                cluster.init();
+                service.getClusterMap().put(instance.getClusterName(), cluster);
+            }
+
+            if ("remove".equals(action)) {
+                instanceMap.remove(instance.generateInstanceId());
+            } else {
+                Instance oldInstance = instanceMap.get(instance.generateInstanceId());
+                if (oldInstance != null) {
+                    instance.setInstanceId(oldInstance.getInstanceId());
+                } else {
+                    instance.setInstanceId(instance.generateInstanceId(currentInstanceIds));
+                }
+            }
+            instanceMap.put(instance.generateInstanceId(), instance);
+        }
+
+        return new ArrayList<>(instanceMap.values());
     }
 
     private Service getService(String namespaceId, String serviceName) {

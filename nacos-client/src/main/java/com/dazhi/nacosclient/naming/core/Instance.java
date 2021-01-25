@@ -1,5 +1,7 @@
 package com.dazhi.nacosclient.naming.core;
 
+import java.util.Set;
+
 public class Instance {
     /**
      * unique id of this instance.
@@ -29,6 +31,10 @@ public class Instance {
 
     public String generateInstanceId() {
         return getIp() + "#" + getPort() + "#" + getClusterName() + "#" + getServiceName();
+    }
+
+    public String generateInstanceId(Set<String> currentInstanceIds) {
+        return generateInstanceId();
     }
 
     public String getInstanceId() {
@@ -78,4 +84,9 @@ public class Instance {
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
+
+    public String toIpAddr() {
+        return getIp() + ":" + getPort();
+    }
+
 }

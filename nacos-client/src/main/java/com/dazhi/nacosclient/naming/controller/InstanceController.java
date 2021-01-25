@@ -2,20 +2,30 @@ package com.dazhi.nacosclient.naming.controller;
 
 import com.dazhi.nacosclient.naming.core.Instance;
 import com.dazhi.nacosclient.naming.core.ServiceManager;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
+@RestController
 @RequestMapping("/instance")
 public class InstanceController {
     @Autowired
     private ServiceManager serviceManager;
+
+    @GetMapping("/list")
+    public Object list(HttpServletRequest request) throws Exception {
+
+        return serviceManager;
+    }
 
     @PostMapping
     public String register(HttpServletRequest request) throws Exception {
