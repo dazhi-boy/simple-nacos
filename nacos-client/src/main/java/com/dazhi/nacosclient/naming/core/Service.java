@@ -1,6 +1,7 @@
 package com.dazhi.nacosclient.naming.core;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.*;
 
@@ -100,5 +101,26 @@ public class Service {
             clusterMap.get(entry.getKey()).updateIps(entryIPs);
         }
 //        getPushService().serviceChanged(this);
+    }
+
+    public List<Instance> srvIPs(List<String> clusters) {
+        if (CollectionUtils.isEmpty(clusters)) {
+            clusters = new ArrayList<>();
+            clusters.addAll(clusterMap.keySet());
+        }
+        return allIPs(clusters);
+    }
+
+    public List<Instance> allIPs(List<String> clusters) {
+        List<Instance> result = new ArrayList<>();
+        for (String cluster : clusters) {
+            Cluster clusterObj = clusterMap.get(cluster);
+            if (clusterObj == null) {
+                continue;
+            }
+
+            result.addAll(clusterObj.allIPs());
+        }
+        return result;
     }
 }

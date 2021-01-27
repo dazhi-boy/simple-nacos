@@ -87,7 +87,7 @@ public class ServiceManager {
         return new ArrayList<>(instanceMap.values());
     }
 
-    private Service getService(String namespaceId, String serviceName) {
+    public Service getService(String namespaceId, String serviceName) {
         if (serviceMap.get(namespaceId) == null) {
             return null;
         }
