@@ -63,6 +63,16 @@ public class ServiceManager {
 
         Map<String, Instance> instanceMap;
         instanceMap = new HashMap<>(ips.length);
+        if (currentIPs.size()>0){
+            for (Instance instance : currentIPs) {
+                Instance instance1 = currentInstances.get(instance.toIpAddr());
+                if (instance1 != null) {
+//                    instance.setHealthy(instance1.isHealthy());
+//                    instance.setLastBeat(instance1.getLastBeat());
+                }
+                instanceMap.put(instance.generateInstanceId(), instance);
+            }
+        }
 
         for (Instance instance : ips) {
             if (!service.getClusterMap().containsKey(instance.getClusterName())) {
