@@ -1,10 +1,9 @@
-
 spring:
   application:
-    name: nacos-jar-test
+    name: nacos-jar-test-consume
   cloud:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
 server:
-  port: 8748
+  port: 8750

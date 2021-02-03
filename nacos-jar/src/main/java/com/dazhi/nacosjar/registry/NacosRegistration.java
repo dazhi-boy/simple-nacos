@@ -12,10 +12,10 @@ public class NacosRegistration implements Registration, ServiceInstance {
     private NacosDiscoveryProperties nacosDiscoveryProperties;
     private ApplicationContext context;
 
-    public NacosRegistration(
+    public NacosRegistration(NacosDiscoveryProperties nacosDiscoveryProperties,
                              ApplicationContext context) {
         System.out.println("_+_+_NacosRegistration");
-//        this.nacosDiscoveryProperties = nacosDiscoveryProperties;
+        this.nacosDiscoveryProperties = nacosDiscoveryProperties;
         this.context = context;
     }
 
@@ -26,8 +26,7 @@ public class NacosRegistration implements Registration, ServiceInstance {
 
     @Override
     public String getServiceId() {
-//        return nacosDiscoveryProperties.getService();
-        return "nacos-jar";
+        return nacosDiscoveryProperties.getService();
     }
 
     @Override
@@ -37,7 +36,11 @@ public class NacosRegistration implements Registration, ServiceInstance {
 
     @Override
     public int getPort() {
-        return 0;
+        return nacosDiscoveryProperties.getPort();
+    }
+
+    public void setPort(int port) {
+        this.nacosDiscoveryProperties.setPort(port);
     }
 
     @Override

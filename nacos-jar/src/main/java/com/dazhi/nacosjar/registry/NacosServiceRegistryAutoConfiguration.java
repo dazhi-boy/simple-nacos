@@ -13,16 +13,20 @@ public class NacosServiceRegistryAutoConfiguration {
     public NacosServiceRegistryAutoConfiguration() {
     }
 
+    // 这里注入服务注册类
     @Bean
-    public NacosServiceRegistry nacosServiceRegistry() {
-        return new NacosServiceRegistry();
+    public NacosServiceRegistry nacosServiceRegistry(
+            NacosDiscoveryProperties nacosDiscoveryProperties) {
+        return new NacosServiceRegistry(nacosDiscoveryProperties);
     }
 
+    // 这里注入服务注册类服务基本信息
     @Bean
     @ConditionalOnBean(AutoServiceRegistrationProperties.class)
     public NacosRegistration nacosRegistration(
+            NacosDiscoveryProperties nacosDiscoveryProperties,
             ApplicationContext context) {
-        return new NacosRegistration(context);
+        return new NacosRegistration(nacosDiscoveryProperties, context);
     }
 
     @Bean

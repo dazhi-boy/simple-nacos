@@ -4,7 +4,11 @@ import org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegis
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationProperties;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
+import org.springframework.util.Assert;
 
+/**
+ * 这个方法继承AbstractAutoServiceRegistration，里面实现ApplicationListener<WebServerInitializedEvent>，监听WebServerInitializedEvent事件，
+ */
 public class NacosAutoServiceRegistration extends AbstractAutoServiceRegistration<Registration> {
     private NacosRegistration registration;
 
@@ -34,7 +38,11 @@ public class NacosAutoServiceRegistration extends AbstractAutoServiceRegistratio
     @Override
     protected Registration getRegistration() {
         System.out.println("+++++++++++++++++++++++++++++++++++++getRegistration");
-        return null;
+        if (this.registration.getPort() < 0 && this.getPort().get() > 0) {
+            this.registration.setPort(this.getPort().get());
+        }
+        Assert.isTrue(this.registration.getPort() > 0, "service.port has not been set");
+        return this.registration;
     }
 
     @Override
