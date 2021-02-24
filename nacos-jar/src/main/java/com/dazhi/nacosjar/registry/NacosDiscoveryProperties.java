@@ -20,6 +20,8 @@ public class NacosDiscoveryProperties {
 
     private String clusterName = "DEFAULT";
 
+    private String serverAddr;
+
     public String getService() {
         return service;
     }
@@ -46,6 +48,18 @@ public class NacosDiscoveryProperties {
 
     public void setClusterName(String clusterName) {
         this.clusterName = clusterName;
+    }
+
+    public void setService(String service) {
+        this.service = service;
+    }
+
+    public String getServerAddr() {
+        return serverAddr;
+    }
+
+    public void setServerAddr(String serverAddr) {
+        this.serverAddr = serverAddr;
     }
 
     public NamingService namingServiceInstance() {

@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.dazhi.config.ribbon.RibbonNacosAutoConfiguration,\
   com.dazhi.nacosjar.registry.NacosServiceRegistryAutoConfiguration

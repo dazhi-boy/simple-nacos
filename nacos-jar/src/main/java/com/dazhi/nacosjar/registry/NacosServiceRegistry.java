@@ -71,7 +71,7 @@ public class NacosServiceRegistry implements ServiceRegistry<Registration> {
 
     @Override
     public void setStatus(Registration registration, String status) {
-        System.out.println("--------------------------------------setStatus");
+        System.out.println("--------------------------------------setStatus-------这里将nacos上面的实例全部缓存下来");
     }
 
     @Override

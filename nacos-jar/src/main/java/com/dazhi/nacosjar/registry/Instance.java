@@ -1,5 +1,7 @@
 package com.dazhi.nacosjar.registry;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class Instance {
@@ -28,6 +30,8 @@ public class Instance {
      * Service information of instance.
      */
     private String serviceName;
+
+    private Map<String, String> metadata = new HashMap<String, String>();
 
     public String generateInstanceId() {
         return getIp() + "#" + getPort() + "#" + getClusterName() + "#" + getServiceName();
@@ -89,4 +93,11 @@ public class Instance {
         return getIp() + ":" + getPort();
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+    }
 }
