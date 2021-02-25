@@ -13,7 +13,7 @@ import java.util.List;
 public class NacosServerList extends AbstractServerList<NacosServer> {
     private NacosDiscoveryProperties discoveryProperties;
 
-    private String serviceId = "nacos-jar-test";
+    private String serviceId;
 
     public NacosServerList(NacosDiscoveryProperties discoveryProperties) {
         this.discoveryProperties = discoveryProperties;
