@@ -1,5 +1,6 @@
 package com.dazhi.config.ribbon;
 
+import com.dazhi.nacosjar.registry.Instance;
 import com.dazhi.nacosjar.registry.NacosDiscoveryProperties;
 import com.netflix.client.config.IClientConfig;
 import com.netflix.loadbalancer.AbstractServerList;
@@ -14,9 +15,6 @@ public class NacosServerList extends AbstractServerList<NacosServer> {
 
     private String serviceId = "nacos-jar-test";
 
-    /*public NacosServerList(){
-        System.out.println("-----------------------NacosServerList is create");
-    }*/
     public NacosServerList(NacosDiscoveryProperties discoveryProperties) {
         this.discoveryProperties = discoveryProperties;
         System.out.println("-----------------------NacosServerList is create with properties");
@@ -32,7 +30,12 @@ public class NacosServerList extends AbstractServerList<NacosServer> {
     public List<NacosServer> getUpdatedListOfServers() {
         System.out.println("------------------------"+discoveryProperties.getServerAddr());
         System.out.println("------------------------在这里获取所有的service");
-        return null;
+        List<NacosServer> result = new ArrayList<>();
+        Instance instance = new Instance();
+        instance.setIp("127.0.0.1");
+        instance.setPort(8748);
+        result.add(new NacosServer(instance));
+        return result;
     }
 
     public String getServiceId() {
