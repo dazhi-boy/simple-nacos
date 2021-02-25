@@ -1,9 +1,6 @@
 package com.dazhi.nacosjar.registry;
 
-import com.dazhi.nacosjar.common.HttpClient;
-import com.dazhi.nacosjar.common.HttpHeaderConsts;
-import com.dazhi.nacosjar.common.UtilAndComs;
-import com.dazhi.nacosjar.common.UuidUtils;
+import com.dazhi.nacosjar.common.*;
 import com.dazhi.nacosjar.naming.CommonParams;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
@@ -32,13 +29,17 @@ public class NamingProxy {
         params.put(CommonParams.CLUSTER_NAME, instance.getClusterName());
         params.put("ip", instance.getIp());
         params.put("port", String.valueOf(instance.getPort()));
+        params.put("weight", String.valueOf(1));
+        params.put("enable", String.valueOf(true));
+        params.put("healthy", String.valueOf(true));
+        params.put("ephemeral", String.valueOf(true));
 //        params.put("weight", String.valueOf(instance.getWeight()));
 //        params.put("enable", String.valueOf(instance.isEnabled()));
 //        params.put("healthy", String.valueOf(instance.isHealthy()));
 //        params.put("ephemeral", String.valueOf(instance.isEphemeral()));
 //        params.put("metadata", JSON.toJSONString(instance.getMetadata()));
 
-        reqAPI(UtilAndComs.NACOS_URL_INSTANCE, params, "DELETE");
+        reqAPI(UtilAndComs.NACOS_URL_INSTANCE, params, HttpMethod.POST);
     }
 
     public String reqAPI(String api, Map<String, String> params, String method) {

@@ -1,7 +1,10 @@
 package com.dazhi.nacosjar.registry;
 
+import java.util.Properties;
+
 public class NacosNamingService implements NamingService {
     private NamingProxy serverProxy;
+
     @Override
     public void registerInstance(String serviceName, String groupName, Instance instance) {
 //        if (instance.isEphemeral()) {

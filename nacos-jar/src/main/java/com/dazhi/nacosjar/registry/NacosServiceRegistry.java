@@ -7,8 +7,11 @@ import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.util.StringUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static org.springframework.util.ReflectionUtils.rethrowRuntimeException;
 
@@ -17,6 +20,8 @@ public class NacosServiceRegistry implements ServiceRegistry<Registration> {
     private final NacosDiscoveryProperties nacosDiscoveryProperties;
 
     private final NamingService namingService;
+
+    private BeatReactor beatReactor = new BeatReactor();
 
     public NacosServiceRegistry(NacosDiscoveryProperties nacosDiscoveryProperties) {
         System.out.println("--------------------------------------NacosServiceRegistry");
@@ -38,13 +43,29 @@ public class NacosServiceRegistry implements ServiceRegistry<Registration> {
         //这里发http请求将服务注册到service
         NamingProxy namingProxy = new NamingProxy();
         Map<String, String> params = new HashMap();
-        params.put("serviceName", "nacos.naming.serviceName");
-        params.put("ip", "20.18.7.10");
-        params.put("port", "8080");
-        String res = namingProxy.callServer("/instance", params, "", "http://127.0.0.1:8080", HttpMethod.POST);
+        params.put("serviceName", "nacos-jar");
+        params.put("ip", "127.0.0.1");
+        params.put("port", "8868");
+        String res = namingProxy.callServer("/nacos/v1/ns/instance", params, "", "http://127.0.0.1:8848", HttpMethod.POST);
         System.out.println(res);
-        /*Instance instance = getNacosInstanceFromRegistration(registration);
 
+
+        BeatInfo beatInfo = new BeatInfo();
+        beatInfo.setServiceName("nacos-jar");
+        beatInfo.setIp("127.0.0.1");
+        beatInfo.setPort(8868);
+        beatInfo.setCluster("DEFAULT");
+        beatInfo.setWeight(1);
+        beatInfo.setMetadata(null);
+        beatInfo.setScheduled(false);
+        beatInfo.setPeriod(5000);
+
+        beatReactor.addBeatInfo("nacos-jar", beatInfo);
+
+
+
+        Instance instance = getNacosInstanceFromRegistration(registration);
+/*
         try {
             namingService.registerInstance(serviceId, group, instance);
             log.info("nacos registry, {} {} {}:{} register finished", group, serviceId,

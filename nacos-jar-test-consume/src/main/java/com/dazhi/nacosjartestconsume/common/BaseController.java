@@ -16,7 +16,9 @@ public class BaseController {
 
 //        String url = "http://localhost:8748/base?";
 
-        String url = "http://nacos-jar-test/base";
+//        String url = "http://nacos-jar-test/base";
+
+        String url = "http://nacos-jar/base";
 
         return restTemplate.getForObject(url, String.class);
     }
